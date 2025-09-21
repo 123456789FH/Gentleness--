@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>برنامج رفق - مناهضة العنف | v2.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:'Tajawal',system-ui,Segoe UI,Roboto,Arial,sans-serif}
+    .float-animation{animation:float 3s ease-in-out infinite}
+    .float-animation:nth-child(2){animation-delay:.5s}
+    .float-animation:nth-child(3){animation-delay:1s}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    .pulse-heart{animation:pulse-heart 2s ease-in-out infinite}
+    @keyframes pulse-heart{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+    .card-hover{transition:all .3s ease}
+    .card-hover:hover{transform:translateY(-5px);box-shadow:0 20px 40px rgba(0,0,0,.1)}
+    .print-a4 *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    @media print{
+      .no-print{display:none!important}
+      a[href^="http"]::after{content:" 🔗";}
+      a[href^="tel:"]::after{content:" ☎";}
+      a[href^="mailto:"]::after{content:" ✉";}
+      a[href*=".pdf"]::after{content:" 📄";}
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 min-h-screen">
+  <!-- Sticky Header with school identity -->
+  <header class="bg-white/80 backdrop-blur border-b sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
+      <img id="schoolLogo" src="" alt="شعار" class="w-12 h-12 rounded-xl object-cover border hidden"/>
+      <div class="text-sm leading-5">
+        <div class="font-bold text-gray-800" id="ministryName">وزارة التعليم</div>
+        <div class="text-gray-600" id="eduAdmin">إدارة التعليم: —</div>
+        <div class="text-gray-600" id="schoolName">المدرسة: —</div>
+      </div>
+      <div class="ms-auto flex items-center gap-2">
+        <button class="no-print text-sm px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white" onclick="openSettings()">⚙️ إعدادات الترويسة</button>
+        <button class="no-print text-sm px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white" onclick="window.print()">🖨️ طباعة الصفحة</button>
+        <div class="no-print inline-flex gap-2">
+          <button class="text-sm px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white" onclick="downloadFullPagePDF('portrait')">⬇️ تنزيل الصفحة PDF (طولي/تفاعلي)</button>
+          <button class="text-sm px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white" onclick="downloadFullPagePDF('landscape')">⬇️ تنزيل الصفحة PDF (عرضي/تفاعلي)</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="text-center py-8">
+    <div class="inline-flex items-center justify-center mb-3"><div class="text-6xl pulse-heart">💝</div></div>
+    <h1 class="text-5xl font-extrabold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-600 to-teal-600">برنامج رفق</h1>
+    <p class="text-2xl text-gray-700">لمناهضة العنف في المدارس</p>
+    <div class="flex justify-center gap-4 mt-4">
+      <span class="text-3xl float-animation">🌟</span>
+      <span class="text-3xl float-animation">🤝</span>
+      <span class="text-3xl float-animation">🌈</span>
+    </div>
+  </section>
+
+  <main class="max-w-6xl mx-auto px-4 pb-16">
+    <!-- Quick actions -->
+    <div class="grid sm:grid-cols-3 gap-3 mb-6">
+      <button class="no-print bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-2xl py-3 font-bold shadow-lg hover:from-rose-600 hover:to-pink-600" onclick="openReportModal()">📢 بلاغ داخلي آمن</button>
+      <button class="no-print bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-2xl py-3 font-bold shadow-lg hover:from-amber-600 hover:to-yellow-600" onclick="openPledge()">📝 طباعة عهد رفق</button>
+      <button class="no-print bg-gradient-to-r from-indigo-500 to-cyan-500 text-white rounded-2xl py-3 font-bold shadow-lg hover:from-indigo-600 hover:to-cyan-600" onclick="openCertificate()">🎖️ شهادة سفير/ة رفق</button>
+    </div>
+
+    <!-- Intro card -->
+    <div class="bg-white rounded-3xl shadow-xl p-8 mb-8 card-hover text-center">
+      <div class="text-8xl mb-4">🏫</div>
+      <h2 class="text-3xl font-bold text-gray-800 mb-3">مدرسة آمنة وودودة للجميع</h2>
+      <p class="text-lg text-gray-600 leading-relaxed">برنامج رفق يهدف إلى خلق بيئة تعليمية آمنة وإيجابية خالية من العنف والتنمر عبر التوعية، الوقاية، والتدخل المبكر.</p>
+    </div>
+
+    <!-- CTA -->
+    <section id="ctaSection" class="bg-gradient-to-r from-orange-100 to-yellow-100 rounded-3xl p-8 text-center card-hover mb-12 relative">
+      <!-- أيقونة التطبيق العائمة -->
+      <a href="https://123456789fh.github.io/Gentleness/"
+         target="_blank" rel="noopener noreferrer"
+         class="no-print hidden md:flex items-center justify-center absolute -top-5 -right-5 w-16 h-16 rounded-2xl bg-rose-500 text-white shadow-lg ring-4 ring-white/70 hover:scale-105 transition"
+         aria-label="تطبيق الرفق" title="تطبيق الرفق">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12.1 21.35l-1.1-.99C5.14 15.36 2 12.5 2 9.28 2 7.01 3.79 5.2 6.05 5.2c1.38 0 2.73.64 3.6 1.7.87-1.06 2.22-1.7 3.6-1.7 2.26 0 4.05 1.81 4.05 4.08 0 3.22-3.14 6.08-8.9 11.08l-1.3 1z"/>
+        </svg>
+      </a>
+
+      <div class="text-6xl mb-2">🌟</div>
+      <h2 class="text-3xl font-bold text-orange-800 mb-3">انضمّي لرحلة الرفق</h2>
+      <p class="text-lg text-orange-700 mb-5">معًا نبني مدرسة أجمل وأكثر أمانًا للجميع</p>
+      <div class="flex flex-wrap justify-center gap-3 mb-4">
+        <a href="https://padlet.com/harthy298/Kindness" target="_blank" rel="noopener" class="no-print bg-gradient-to-r from-pink-500 to-purple-500 text-white px-6 py-2 rounded-full font-bold text-lg hover:from-pink-600 hover:to-purple-600 transform hover:scale-105 transition">أرسلوا مشاركاتكم 📝</a>
+        <button onclick="openInfo()" class="no-print bg-gradient-to-r from-blue-500 to-teal-500 text-white px-6 py-2 rounded-full font-bold text-lg hover:from-blue-600 hover:to-teal-600 transform hover:scale-105 transition">تواصل معنا 📞</button>
+        <a href="https://123456789fh.github.io/Gentleness/" target="_blank" rel="noopener" class="no-print inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-full font-bold text-lg transform hover:scale-105 transition">💝 تطبيق الرفق</a>
+      </div>
+      <div class="text-sm text-gray-700">
+        <p>الفئة المستهدفة: الطالبات • المعلمات • أولياء الأمور</p>
+        <p class="mt-1 font-medium text-purple-700">إشراف: أ/ فاطمة هزازي</p>
+      </div>
+    </section>
+
+    <!-- Reports table -->
+    <section id="reportsSection" class="bg-white rounded-3xl shadow p-6 mb-12">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-xl font-bold text-gray-800">سجل البلاغات الداخلية (محفوظ محليًا)</h3>
+        <div class="no-print space-x-2 space-x-reverse">
+          <button class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white" onclick="exportReports()">⬇️ تصدير CSV</button>
+          <button class="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white" onclick="clearReports()">🧹 مسح</button>
+        </div>
+      </div>
+      <div class="overflow-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-100 text-gray-700">
+            <tr>
+              <th class="px-3 py-2 text-right">التاريخ</th>
+              <th class="px-3 py-2 text-right">الصف/الفصل</th>
+              <th class="px-3 py-2 text-right">المكان</th>
+              <th class="px-3 py-2 text-right">النوع</th>
+              <th class="px-3 py-2 text-right">وصف موجز</th>
+              <th class="px-3 py-2 text-right">إجراء فوري</th>
+              <th class="px-3 py-2 text-right">إحالة</th>
+            </tr>
+          </thead>
+          <tbody id="reportsBody" class="divide-y"></tbody>
+        </table>
+      </div>
+      <p class="text-xs text-gray-500 mt-3">يتم الحفظ في المتصفح فقط (localStorage). لا يتم رفع أي بيانات للخادم.</p>
+    </section>
+
+    <!-- Official help -->
+    <section class="bg-gradient-to-r from-sky-100 to-blue-100 rounded-3xl p-6">
+      <h3 class="text-xl font-bold text-blue-800 mb-3">جهات المساندة الرسمية</h3>
+      <ul class="space-y-2 text-sm text-blue-900">
+        <li>📞 <strong>خط مركز بلاغات العنف الأسري (وزارة الموارد البشرية)</strong>: <a class="underline" href="tel:1919">1919</a></li>
+        <li>📞 <strong>خط مساندة الطفل</strong>: <a class="underline" href="tel:116111">116111</a></li>
+        <li>📞 <strong>الرقم الموحد للطوارئ</strong>: <a class="underline" href="tel:911">911</a></li>
+      </ul>
+      <p class="text-xs text-blue-800/80 mt-2">للحالات الطارئة أو التي تتطلب تدخلًا فوريًا، الأولوية للاتصال على 911.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center mt-10 text-gray-500">
+      <div class="flex justify-center gap-2 mb-2 text-2xl"><span>💝</span><span>🤝</span><span>🌈</span><span>🏫</span><span>✨</span></div>
+      <p class="text-lg font-medium">برنامج رفق - من أجل مستقبل أفضل لأطفالنا</p>
+      <p class="text-sm mt-1" id="footerLine"></p>
+    </footer>
+  </main>
+
+  <!-- Generic Info Modal -->
+  <div id="infoModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-2xl p-6 max-w-md mx-4 text-center">
+      <div class="text-5xl mb-3">📬</div>
+      <p class="text-base text-gray-800 mb-5">للتواصل: راجعوا المرشدة الطلابية أو إدارة المدرسة. للحالات الطارئة اتصلوا على <strong>911</strong>.</p>
+      <button class="bg-gradient-to-r from-green-600 to-blue-600 text-white px-5 py-2 rounded-full font-bold" onclick="closeInfo()">حسناً</button>
+    </div>
+  </div>
+
+  <!-- Report Modal -->
+  <div id="reportModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-2xl p-6 max-w-2xl w-[92%] mx-4">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-xl font-bold">نموذج بلاغ داخلي</h3>
+        <button class="text-gray-500 hover:text-gray-700" onclick="closeReportModal()">✖</button>
+      </div>
+      <form id="reportForm" class="grid sm:grid-cols-2 gap-3 text-sm">
+        <label class="block">التاريخ<input required type="date" name="date" class="mt-1 w-full border rounded-lg px-3 py-2"></label>
+        <label class="block">الصف/الفصل<input required type="text" name="class" placeholder="6/أ" class="mt-1 w-full border rounded-lg px-3 py-2"></label>
+        <label class="block">المكان<select name="place" class="mt-1 w-full border rounded-lg px-3 py-2"><option>الفصل</option><option>الساحة</option><option>الممر</option><option>المقصف</option><option>الإنترنت/منصات</option></select></label>
+        <label class="block">نوع السلوك<select name="type" class="mt-1 w-full border rounded-lg px-3 py-2"><option>لفظي</option><option>جسدي</option><option>تنمّر/تكرار</option><option>إقصاء اجتماعي</option><option>إلكتروني</option><option>تلف ممتلكات</option></select></label>
+        <label class="block sm:col-span-2">وصف موجز<textarea name="desc" rows="3" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="ماذا حدث بإيجاز؟"></textarea></label>
+        <div class="sm:col-span-2 flex justify-end gap-2 mt-2">
+          <button type="button" class="px-4 py-2 rounded-lg bg-gray-200" onclick="closeReportModal()">إلغاء</button>
+          <button class="px-4 py-2 rounded-lg bg-indigo-600 text-white">حفظ البلاغ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Pledge Modal -->
+  <div id="pledgeModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-2xl p-6 w-[92%] max-w-3xl print-a4">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-xl font-bold">عهد رفق</h3>
+        <div class="no-print flex items-center gap-2">
+          <label class="text-sm flex items-center gap-2">
+            <span>وضع الطباعة:</span>
+            <select id="pledgeOrientation" class="border rounded-lg px-2 py-1">
+              <option value="portrait">طولي (افتراضي)</option>
+              <option value="landscape">عرضي</option>
+            </select>
+          </label>
+          <button class="px-4 py-2 rounded-lg bg-emerald-600 text-white" onclick="printElement('#pledgeContent', document.getElementById('pledgeOrientation').value)">🖨️ طباعة</button>
+          <button class="px-4 py-2 rounded-lg bg-blue-600 text-white" onclick="downloadPDF('#pledgeContent', document.getElementById('pledgeOrientation').value, 'عهد-رفق.pdf')">⬇️ تنزيل PDF</button>
+          <button class="text-gray-500" onclick="closePledge()">✖</button>
+        </div>
+      </div>
+      <div id="pledgeContent" class="bg-white rounded-2xl border p-8 text-center leading-8">
+        <h4 class="text-2xl font-extrabold mb-3">💝 عهد «رفق»</h4>
+        <p class="text-lg">أنا .................................. أتعهد أن تكون كلماتي لطيفة، ويدي آمنة، وقلبي رحيمًا، وإذا تعرّضتُ أو شاهدتُ عنفًا فسأُبلِّغ فورًا بالطريقة الصحيحة.</p>
+        <div class="grid grid-cols-2 gap-6 mt-8 text-sm">
+          <div class="border rounded-xl p-4"><div class="font-bold">اسم الطالبة</div><div class="h-8 border-b"></div></div>
+          <div class="border rounded-xl p-4"><div class="font-bold">التاريخ</div><div class="h-8 border-b"></div></div>
+          <div class="border rounded-xl p-4 col-span-2"><div class="font-bold">توقيع ولي الأمر/المعلمة</div><div class="h-8 border-b"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Certificate Modal -->
+  <div id="certModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-2xl p-6 w-[92%] max-w-3xl print-a4">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-xl font-bold">شهادة سفير/ة رفق</h3>
+        <div class="no-print flex items-center gap-2">
+          <input id="certName" type="text" placeholder="اكتبي اسم الطالبة" class="border rounded-lg px-3 py-2" oninput="updateCert()" />
+          <label class="text-sm flex items-center gap-2">
+            <span>وضع الطباعة:</span>
+            <select id="certOrientation" class="border rounded-lg px-2 py-1">
+              <option value="portrait">طولي (افتراضي)</option>
+              <option value="landscape">عرضي</option>
+            </select>
+          </label>
+          <button class="px-4 py-2 rounded-lg bg-emerald-600 text-white" onclick="printElement('#certPaper', document.getElementById('certOrientation').value)">🖨️ طباعة</button>
+          <button class="px-4 py-2 rounded-lg bg-blue-600 text-white" onclick="downloadPDF('#certPaper', document.getElementById('certOrientation').value, 'شهادة-سفير-رفق.pdf')">⬇️ تنزيل PDF</button>
+          <button class="text-gray-500" onclick="closeCertificate()">✖</button>
+        </div>
+      </div>
+      <div id="certPaper" class="bg-white rounded-2xl border p-8 text-center">
+        <div class="text-5xl mb-2">🎖️</div>
+        <h4 class="text-2xl font-extrabold mb-1">شهادة «سفير/ة رفق»</h4>
+        <p class="text-gray-700">تمنح للطالبة</p>
+        <div class="text-3xl font-extrabold my-3" id="certNamePreview">—</div>
+        <p class="text-gray-700">نظير مبادرتها في نشر اللطف ومساندة زميلاتها والإبلاغ الآمن.</p>
+        <div class="grid grid-cols-2 gap-6 mt-8 text-sm">
+          <div class="text-left">التاريخ: <span id="today"></span></div>
+          <div class="text-right">توقيع: ______________________</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal (Header + Footer) -->
+  <div id="settingsModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-2xl p-6 w-[92%] max-w-2xl">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-xl font-bold">إعدادات الترويسة والتذييل</h3>
+        <button class="text-gray-500" onclick="closeSettings()">✖</button>
+      </div>
+      <form id="settingsForm" class="grid sm:grid-cols-2 gap-3 text-sm">
+        <label class="block">وزارة/جهة<input type="text" name="ministry" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="وزارة التعليم"></label>
+        <label class="block">إدارة التعليم<input type="text" name="edu" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="إدارة التعليم —"></label>
+        <label class="block sm:col-span-2">اسم المدرسة<input type="text" name="school" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="مدرسة — الابتدائية"></label>
+        <label class="block sm:col-span-2">رابط شعار المدرسة (اختياري)<input type="url" name="logo" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="https://..."></label>
+        <label class="block sm:col-span-2">اسم مدير/ة المدرسة (للتذييل)<input type="text" name="principal" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="—"></label>
+        <label class="block sm:col-span-2">نص التذييل المخصص<input type="text" name="footer" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="اتركه فارغًا ليظهر: برمجة: أ/ فاطمة هزازي"></label>
+        <label class="block sm:col-span-2">رابط التذييل (اختياري)<input type="url" name="footerLink" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="https://example.com"></label>
+        <div class="sm:col-span-2 flex justify-end gap-2 mt-2">
+          <button type="button" class="px-4 py-2 rounded-lg bg-gray-200" onclick="closeSettings()">إلغاء</button>
+          <button class="px-4 py-2 rounded-lg bg-indigo-600 text-white">حفظ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    (function(){
+      var s1=document.createElement('script'); s1.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'; s1.defer=true; document.head.appendChild(s1);
+      var s2=document.createElement('script'); s2.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'; s2.defer=true; document.head.appendChild(s2);
+    })();
+
+    async function downloadPDF(sel, orientation, filename){
+      return downloadForSelector(sel, orientation, filename);
+    }
+    async function downloadFullPagePDF(orientation){
+      return downloadForSelector('body', orientation, 'الصفحة-كاملة.pdf', true);
+    }
+
+    async function downloadForSelector(sel, orientation, filename, wholePage){
+      try{
+        const root = sel==='body' ? document.body : document.querySelector(sel);
+        if(!root){ alert('لا يوجد محتوى'); return; }
+        if (document.fonts && document.fonts.ready) { await document.fonts.ready; }
+        async function ensureLibs(){
+          if (window.html2canvas && window.jspdf) return true;
+          await new Promise(r=>setTimeout(r,120));
+          return ensureLibs();
+        }
+        await ensureLibs();
+
+        const { jsPDF } = window.jspdf;
+        const pageW = (orientation==='landscape') ? 297 : 210;
+        const pageH = (orientation==='landscape') ? 210 : 297;
+        const margin = 10;
+        const contentW = pageW - margin*2;
+        const contentH = pageH - margin*2;
+
+        const docW = wholePage
+          ? Math.max(document.documentElement.scrollWidth, document.body.scrollWidth)
+          : root.getBoundingClientRect().width;
+        const docH = wholePage
+          ? Math.max(document.documentElement.scrollHeight, document.body.scrollHeight)
+          : root.getBoundingClientRect().height;
+
+        const scale = Math.min(3, Math.max(2, window.devicePixelRatio||2));
+        const canvas = await html2canvas(root, {
+          scale, useCORS:true, backgroundColor:'#ffffff',
+          windowWidth: wholePage ? docW : undefined,
+          windowHeight: wholePage ? docH : undefined,
+          scrollX: wholePage ? -window.scrollX : undefined,
+          scrollY: wholePage ? -window.scrollY : undefined
+        });
+
+        const mmPerPx = contentW / canvas.width;
+        const slicePx = Math.floor(contentH / mmPerPx);
+        const totalPages = Math.max(1, Math.ceil(canvas.height / slicePx));
+
+        const pdf = new jsPDF({ orientation: orientation || 'portrait', unit:'mm', format:'a4' });
+
+        function addSlice(pageIndex){
+          const sy = pageIndex * slicePx;
+          const sh = Math.min(slicePx, canvas.height - sy);
+          const pageCanvas = document.createElement('canvas');
+          pageCanvas.width = canvas.width;
+          pageCanvas.height = sh;
+          const ctx = pageCanvas.getContext('2d');
+          ctx.drawImage(canvas, 0, sy, canvas.width, sh, 0, 0, canvas.width, sh);
+          const imgData = pageCanvas.toDataURL('image/jpeg', 0.98);
+          const imgH_mm = sh * mmPerPx;
+          if(pageIndex>0) pdf.addPage();
+          pdf.addImage(imgData, 'JPEG', margin, margin, contentW, imgH_mm, undefined, 'FAST');
+        }
+
+        const anchors = Array.from(root.querySelectorAll('a[href]'));
+        const rootRect = root.getBoundingClientRect();
+        const rootTopPx = (wholePage ? 0 : (rootRect.top + window.scrollY));
+        const rootLeftPx = (wholePage ? 0 : (rootRect.left + window.scrollX));
+
+        const annotsByPage = Array.from({length: totalPages}, () => []);
+
+        anchors.forEach(a=>{
+          let href = a.getAttribute('href') || '';
+          try { href = new URL(href, location.href).href; } catch(e){}
+          if (!/^https?:|^mailto:|^tel:/.test(href)) return;
+          const r = a.getBoundingClientRect();
+          const absLeft = r.left + window.scrollX - rootLeftPx;
+          const absTop  = r.top  + window.scrollY - rootTopPx;
+          const mmPerPxLocal = mmPerPx;
+          const pageIndex = Math.floor(absTop / slicePx);
+          const x_mm = margin + absLeft * mmPerPxLocal;
+          const y_mm = margin + (absTop - pageIndex*slicePx) * mmPerPxLocal;
+          const w_mm = Math.max(6, r.width  * mmPerPxLocal);
+          const h_mm = Math.max(6, r.height * mmPerPxLocal);
+          if(pageIndex>=0 && pageIndex<totalPages){
+            annotsByPage[pageIndex].push({x:x_mm,y:y_mm,w:w_mm,h:h_mm,url:href});
+          }
+        });
+
+        for(let i=0;i<totalPages;i++){
+          addSlice(i);
+          (annotsByPage[i]||[]).forEach(L=>{ try{ pdf.link(L.x,L.y,L.w,L.h,{url:L.url}); }catch(e){} });
+        }
+
+        pdf.save(filename || 'document.pdf');
+      }catch(e){
+        console.error(e);
+        alert('تعذّر إنشاء PDF تفاعلي للصفحة.');
+      }
+    }
+
+    // Info modal
+    function openInfo(){document.getElementById('infoModal').classList.remove('hidden');document.getElementById('infoModal').classList.add('flex')}
+    function closeInfo(){document.getElementById('infoModal').classList.add('hidden');document.getElementById('infoModal').classList.remove('flex')}
+
+    // Report modal
+    function openReportModal(){document.getElementById('reportModal').classList.remove('hidden');document.getElementById('reportModal').classList.add('flex')}
+    function closeReportModal(){document.getElementById('reportModal').classList.add('hidden');document.getElementById('reportModal').classList.remove('flex')}
+
+    // Pledge modal
+    function openPledge(){document.getElementById('pledgeModal').classList.remove('hidden');document.getElementById('pledgeModal').classList.add('flex')}
+    function closePledge(){document.getElementById('pledgeModal').classList.add('hidden');document.getElementById('pledgeModal').classList.remove('flex')}
+
+    // Certificate modal
+    function openCertificate(){document.getElementById('certModal').classList.remove('hidden');document.getElementById('certModal').classList.add('flex')}
+    function closeCertificate(){document.getElementById('certModal').classList.add('hidden');document.getElementById('certModal').classList.remove('flex')}
+    function updateCert(){document.getElementById('certNamePreview').textContent=document.getElementById('certName').value||'—'}
+
+    // Settings modal
+    function openSettings(){
+      document.getElementById('settingsModal').classList.remove('hidden');
+      document.getElementById('settingsModal').classList.add('flex');
+      const s=JSON.parse(localStorage.getItem('rifqSettings')||'{}');
+      document.querySelector('#settingsForm [name=ministry]').value=s.ministry||document.getElementById('ministryName').textContent;
+      document.querySelector('#settingsForm [name=edu]').value=s.edu||document.getElementById('eduAdmin').textContent.replace('إدارة التعليم: ','');
+      document.querySelector('#settingsForm [name=school]').value=s.school||document.getElementById('schoolName').textContent.replace('المدرسة: ','');      
+      document.querySelector('#settingsForm [name=logo]').value=s.logo||'';
+      document.querySelector('#settingsForm [name=principal]').value=s.principal||'';
+      document.querySelector('#settingsForm [name=footer]').value=s.footer||'';
+      document.querySelector('#settingsForm [name=footerLink]').value=s.footerLink||'';
+    }
+    function closeSettings(){document.getElementById('settingsModal').classList.add('hidden');document.getElementById('settingsModal').classList.remove('flex')}
+
+    // Print via iframe (icons appear after links)
+    function printElement(sel, orientation){
+      const el=document.querySelector(sel);
+      const content = el ? el.outerHTML : '<div style="padding:20mm;text-align:center">لا يوجد محتوى للطباعة.</div>';
+      const html = `<!DOCTYPE html><html dir="rtl"><head><meta charset="utf-8"><title>طباعة</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  body{font-family:Tajawal,system-ui,Arial;margin:0;padding:0;direction:rtl}
+  @page{size:A4 ${orientation||'portrait'}; margin:15mm}
+  .print-a4 *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  a[href^="http"]::after{content:" 🔗";} a[href^="tel:"]::after{content:" ☎";} a[href^="mailto:"]::after{content:" ✉";} a[href*=".pdf"]::after{content:" 📄";}
+  .border{border:1px solid #e5e7eb} .border-b{border-bottom:1px solid #e5e7eb}
+  .rounded-xl{border-radius:0.75rem} .rounded-2xl{border-radius:1rem}
+  .p-4{padding:1rem} .p-8{padding:2rem} .mt-8{margin-top:2rem} .mb-3{margin-bottom:.75rem}
+  .text-center{text-align:center} .text-left{text-align:left} .text-right{text-align:right}
+  .text-lg{font-size:1.125rem} .text-2xl{font-size:1.5rem} .text-3xl{font-size:1.875rem}
+  .font-bold{font-weight:700} .font-extrabold{font-weight:800}
+  .grid{display:grid} .grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))} .gap-6{gap:1.5rem}
+  .h-8{height:2rem}
+  #pledgeContent,#certPaper,#ctaSection{max-width:190mm;margin:0 auto;}
+</style>
+</head><body class="print-a4">` + content + `</body></html>`;
+
+      const iframe = document.createElement('iframe');
+      iframe.style.position='fixed'; iframe.style.right='0'; iframe.style.bottom='0';
+      iframe.style.width='0'; iframe.style.height='0'; iframe.style.border='0';
+      document.body.appendChild(iframe);
+
+      const doc = iframe.contentDocument || iframe.contentWindow.document;
+      doc.open(); doc.write(html); doc.close();
+
+      function doPrint(){
+        try{ iframe.contentWindow.focus(); iframe.contentWindow.print(); }catch(e){
+          const w=window.open('','PRINT','height=700,width=900');
+          w.document.open(); w.document.write(html); w.document.close();
+          w.focus(); w.print();
+        }
+        setTimeout(()=>{ try{ document.body.removeChild(iframe); }catch(e){} }, 2000);
+      }
+
+      if (doc.fonts && doc.fonts.ready) { doc.fonts.ready.then(()=>setTimeout(doPrint,150)); }
+      else { iframe.onload = ()=>setTimeout(doPrint,150); }
+    }
+
+    // Reports persistence
+    const tbody=document.getElementById('reportsBody');
+    function loadReports(){const arr=JSON.parse(localStorage.getItem('rifqReports')||'[]');tbody.innerHTML='';arr.forEach(r=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td class="px-3 py-2">${r.date||''}</td>
+                    <td class="px-3 py-2">${r.class||''}</td>
+                    <td class="px-3 py-2">${r.place||''}</td>
+                    <td class="px-3 py-2">${r.type||''}</td>
+                    <td class="px-3 py-2">${r.desc||''}</td>
+                    <td class="px-3 py-2">${r.action||''}</td>
+                    <td class="px-3 py-2">${r.ref||''}</td>`;
+      tbody.appendChild(tr);
+    })}
+    function saveReport(data){const arr=JSON.parse(localStorage.getItem('rifqReports')||'[]');arr.push(data);localStorage.setItem('rifqReports',JSON.stringify(arr));loadReports()}
+    function exportReports(){const arr=JSON.parse(localStorage.getItem('rifqReports')||'[]');if(!arr.length){alert('لا توجد بيانات');return}
+      const header=Object.keys(arr[0]);
+      const csv=[header.join(',')].concat(arr.map(o=>header.map(k=>`"${String(o[k]??'').replace(/"/g,'""')}"`).join(','))).join('\n');
+      const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='rifq_reports.csv';a.click();URL.revokeObjectURL(url)}
+    function clearReports(){if(confirm('متأكدة من مسح جميع البلاغات؟')){localStorage.removeItem('rifqReports');loadReports()}}
+
+    document.getElementById('reportForm').addEventListener('submit',e=>{e.preventDefault();
+      const fd=new FormData(e.target);const data=Object.fromEntries(fd.entries());saveReport(data);e.target.reset();closeReportModal();
+      alert('تم حفظ البلاغ في الجهاز (محليًا).')
+    });
+
+    // Settings persistence
+    document.getElementById('settingsForm').addEventListener('submit',e=>{e.preventDefault();
+      const fd=new FormData(e.target);const s=Object.fromEntries(fd.entries());localStorage.setItem('rifqSettings',JSON.stringify(s));applySettings();closeSettings();
+    });
+    function applySettings(){const s=JSON.parse(localStorage.getItem('rifqSettings')||'{}');
+      document.getElementById('ministryName').textContent=s.ministry||'وزارة التعليم';
+      document.getElementById('eduAdmin').textContent='إدارة التعليم: '+(s.edu||'—');
+      document.getElementById('schoolName').textContent='المدرسة: '+(s.school||'—');
+
+      const parts=[];
+      const defaultCredit = 'برمجة: أ/ فاطمة هزازي';
+      if (s.footer && s.footer.trim()) {
+        const credit = s.footerLink
+          ? `<a href="${s.footerLink}" target="_blank" rel="noopener noreferrer" class="underline decoration-dotted">${s.footer}</a>`
+          : s.footer;
+        parts.push(credit);
+      } else {
+        parts.push(defaultCredit);
+      }
+      if (s.principal && s.principal.trim()) {
+        parts.push('مدير/ة المدرسة: ' + s.principal);
+      }
+      document.getElementById('footerLine').innerHTML = parts.join(' • ');
+
+      const logo=document.getElementById('schoolLogo');
+      if(s.logo){logo.src=s.logo;logo.classList.remove('hidden')} else {logo.classList.add('hidden')}
+    }
+
+    // Today date in certificate
+    function setToday(){const d=new Date();const f=d.toLocaleDateString('ar-SA',{year:'numeric',month:'long',day:'numeric'});document.getElementById('today').textContent=f}
+    window.addEventListener('DOMContentLoaded', setToday);
+
+    // Sparkles
+    function createSparkle(){const s=document.createElement('div');s.textContent='✨';s.style.position='fixed';s.style.left=Math.random()*window.innerWidth+'px';s.style.top=Math.random()*window.innerHeight+'px';s.style.fontSize='18px';s.style.pointerEvents='none';s.style.opacity='0.85';s.style.animation='sparkle 2s ease-out forwards';document.body.appendChild(s);setTimeout(()=>s.remove(),2000)}
+    const style=document.createElement('style');style.textContent='@keyframes sparkle{0%{opacity:1;transform:scale(0) rotate(0)}50%{opacity:1;transform:scale(1) rotate(180deg)}100%{opacity:0;transform:scale(0) rotate(360deg)}}';document.head.appendChild(style);
+    window.addEventListener('DOMContentLoaded',()=>{applySettings();loadReports();setInterval(createSparkle,3000)})
+  </script>
+</body>
+</html>
